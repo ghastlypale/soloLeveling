@@ -1,27 +1,40 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class soloLeveling {
-    int intelligence;
-    int strength;
-    int lvl;
-    int streak;
-    String[] keywords = {"book", "workout", "code",};
 
     public static void addTask (){
         try(
-                FileWriter fw = new FileWriter("tasks.txt", true);
+                BufferedWriter fw = new BufferedWriter( new FileWriter("tasks.txt", true));
                 Scanner input = new Scanner(System.in)
         ) {
+            int lastLineNumber = getLastStringNumber("tasks.txt");
             System.out.println("Enter the task:");
-            String task = input.nextLine();
-            fw.write(task + System.lineSeparator());
+            while (true){
+                String task = input.nextLine();
+                if ("done".equalsIgnoreCase(task)) break;
+                lastLineNumber++;
+                fw.write(lastLineNumber + ". " + task + "\n");
+                fw.flush();
+            }
         } catch (IOException e) {
             System.out.println("Error");
             e.printStackTrace();
         }
     }
+
+    public static int getLastStringNumber(String filename) throws IOException{
+        int lastNumber = 0;
+        try (BufferedReader ft = new BufferedReader( new FileReader(filename))) {
+            String line;
+            while ((line = ft.readLine()) != null) {
+                lastNumber = Integer.parseInt(line.split("\\.")[0]);
+            }
+
+        }catch  (NumberFormatException | ArrayIndexOutOfBoundsException ignored){}
+        return lastNumber;
+    }
+
 
     public static void main(String[] args) {
         addTask();
