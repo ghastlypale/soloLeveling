@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +11,27 @@ public class Task {
     public Task() {
         tasks = new HashMap<>();
         loadTasksFromFile();
+    }
+
+    public Integer getTaskId (int taskId) {
+            if (tasks.containsKey(taskId)) {
+                return taskId;
+            }
+            return null;
+    }
+
+    public String getTaskDescription(int taskId) {
+        if (tasks.containsKey(taskId)) {
+            return tasks.get(taskId).get(0);
+        }
+        return null;
+    }
+
+    public String getTaskStats (int taskId) {
+        if (tasks.containsKey(taskId)) {
+            return tasks.get(taskId).get(1);
+        }
+        return null;
     }
 
     private void loadTasksFromFile() {
@@ -29,7 +47,16 @@ public class Task {
         }
     }
     private void saveStatsToFile() {
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(taskFile))) {
+            for (Map.Entry<Integer, List<String>> entry : tasks.entrySet()) {
+                int taskId = entry.getKey();
+                String taskDescription = entry.getValue().get(0);
+                String taskStats = entry.getValue().get(1);
+                writer.write(taskId+":"+taskDescription+":"+taskStats+"\n");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }
