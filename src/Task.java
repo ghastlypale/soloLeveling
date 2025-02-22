@@ -43,10 +43,10 @@ public class Task {
             }
         }catch (IOException e){
            System.out.println("File not found, creating a new one");
-           saveStatsToFile();
+           saveTasksToFile();
         }
     }
-    private void saveStatsToFile() {
+    private void saveTasksToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(taskFile))) {
             for (Map.Entry<Integer, List<String>> entry : tasks.entrySet()) {
                 int taskId = entry.getKey();
