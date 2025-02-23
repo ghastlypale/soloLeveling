@@ -1,3 +1,5 @@
+package classes;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +33,11 @@ public class Stats {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
            String line;
            while ((line = reader.readLine()) != null) {
-               String[] parts = line.split(":");
+               String[] parts = line.split("‖");
                stats.put(parts[0], Integer.parseInt(parts[1]));
            }
         } catch (IOException e){
-            System.out.println("Error loading stats from file");
+            System.out.println("File not found, creating new one");
             saveStatsToFile();
         }
     }
@@ -45,7 +47,7 @@ public class Stats {
             for (Map.Entry<String, Integer> entry : stats.entrySet()) {
                String statName = entry.getKey();
                int statValue = entry.getValue();
-               writer.write(statName + ":" + statValue  + "\n");
+               writer.write(statName + "‖" + statValue  + "\n");
             }
         } catch (IOException e){
             e.printStackTrace();
